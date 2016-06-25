@@ -96,7 +96,7 @@ ApplicationWindow {
                         style: myButtonStyle
                         height: 50
                         text: qsTr("Camera")
-                        onClicked: stackView.push(Qt.resolvedUrl("/CameraPage.qml"))
+                        onClicked: stackView.push(Qt.resolvedUrl("CameraPage.qml"))
                     }
                 }
             }
