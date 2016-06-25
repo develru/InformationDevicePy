@@ -14,13 +14,9 @@ if __name__ == '__main__':
 
     app = QGuiApplication(sys.argv)
     app.addLibraryPath(path.abspath(path.join(path.dirname(PyQt5.__file__), 'plugins')))
-    filename = path.abspath(path.join(path.dirname(__file__), 'UIInfoDevice', 'UIInfoDevice.qml'))
-    # engine = QQmlApplicationEngine()
-    #
-    # engine.load(QUrl(filename))
+    # filename = path.abspath(path.join(path.dirname(__file__), 'UIInfoDevice', 'UIInfoDevice.qml'))
+    engine = QQmlApplicationEngine()
 
-    view = QQuickView()
-    view.setSource(QUrl(filename))
-    view.show()
+    engine.load(QUrl('UIInfoDevice/UIInfoDevice.qml'))
 
     sys.exit(app.exec_())
