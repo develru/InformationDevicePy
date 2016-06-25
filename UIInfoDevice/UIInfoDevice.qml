@@ -1,27 +1,25 @@
-import QtQuick 2.4
-import QtQuick.Window 2.2
+import QtQuick 2.5
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 
-Window {
+ApplicationWindow {
+    id: mainWin
+    property string bgColor: "#078c72"
+        property string toolBarColor: "#045d4c"
+        property string buttonColor: "#033e32"
+        property string buttonColorDown: "#022e26"
+        property string buttonColorHover: "#20a58b"
+        property string buttonTextColor: "#6ac3b2"
+        property string buttonBorderColor: "#056d58"
+
     visible: true
-    Rectangle {
-        color: 'green'
-        width: 400
-        height: 400
-    }
+    width: 800
+    height: 480
+    title: qsTr("Pi control")
 
-//    width: 640
-//    height: 480
-//    title: qsTr("Hello World")
-
-//    MouseArea {
-//        anchors.fill: parent
-//        onClicked: {
-//            Qt.quit();
-//        }
-//    }
-
-//    Text {
-//        text: qsTr("Hello World")
-//        anchors.centerIn: parent
-//    }
+    style: ApplicationWindowStyle {
+            background: Rectangle {
+                color: mainWin.bgColor
+            }
+        }
 }
