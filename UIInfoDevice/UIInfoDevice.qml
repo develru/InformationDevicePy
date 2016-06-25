@@ -89,7 +89,7 @@ ApplicationWindow {
                         height: 50
                         text: qsTr("Weather")
                         onClicked: stackView.push(Qt.resolvedUrl(
-                                                      "/WeatherForecast.qml"))
+                                                      "WeatherForecast.qml"))
                     }
 
                     Button {
