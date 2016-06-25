@@ -8,6 +8,8 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtQml import QQmlApplicationEngine, QQmlComponent
 from PyQt5.QtQuick import QQuickView
 
+from modules.currenttime import CurrentTime
+
 
 if __name__ == '__main__':
     environ['QT_LOGGING_TO_CONSOLE'] = '1'
@@ -16,6 +18,9 @@ if __name__ == '__main__':
     app.addLibraryPath(path.abspath(path.join(path.dirname(PyQt5.__file__), 'plugins')))
     # filename = path.abspath(path.join(path.dirname(__file__), 'UIInfoDevice', 'UIInfoDevice.qml'))
     engine = QQmlApplicationEngine()
+
+    cTime = CurrentTime()
+    engine.rootContext().setContextProperty('curtime', cTime)
 
     engine.load(QUrl('UIInfoDevice/UIInfoDevice.qml'))
 
