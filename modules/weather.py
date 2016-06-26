@@ -52,16 +52,23 @@ class WeatherController(QObject):
 
     @pyqtSlot()
     def view_is_ready(self):
-        print('The view is ready')
+        """
+        Request the weather data and start the timer when the view is ready,
+        called from the view onCompleted.
+
+        :rtype: none
+        """
+        self._request_weather_data()
+        self._timer.start(3600000)
 
     @pyqtSlot()
     def stop_timer(self):
         pass
 
-    def weather_data_recived(self):
+    def weather_data_received(self):
         pass
 
-    def forecast_data_recived(self):
+    def forecast_data_received(self):
         pass
 
     def update_weather(self):
