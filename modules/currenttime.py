@@ -19,17 +19,17 @@ from PyQt5.QtCore import QObject, QTimer, pyqtProperty, QTime, pyqtSignal
 
 class CurrentTime(QObject):
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super(CurrentTime, self).__init__(parent)
 
         self._my_timer = QTimer(self)
-        self._my_timer.timeout.connect(self.refreshTime)
+        self._my_timer.timeout.connect(self.refresh_time)
         self._my_timer.start(10000)
 
-    timeChanged = pyqtSignal()
+    time_changed = pyqtSignal()
 
-    @pyqtProperty('QString', notify=timeChanged)
+    @pyqtProperty('QString', notify=time_changed)
     def time(self):
         return QTime.currentTime().toString('hh:mm')
 
-    def refreshTime(self):
+    def refresh_time(self):
         self.timeChanged.emit()

@@ -20,9 +20,7 @@ import PyQt5
 from os import path, environ
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QGuiApplication
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtQml import QQmlApplicationEngine, QQmlComponent
-from PyQt5.QtQuick import QQuickView
+from PyQt5.QtQml import QQmlApplicationEngine
 
 from modules.currenttime import CurrentTime
 
