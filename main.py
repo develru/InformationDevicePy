@@ -23,6 +23,7 @@ from PyQt5.QtGui import QGuiApplication
 from PyQt5.QtQml import QQmlApplicationEngine
 
 from modules.currenttime import CurrentTime
+from modules.weather import WeatherController
 
 
 if __name__ == '__main__':
@@ -36,6 +37,9 @@ if __name__ == '__main__':
 
     cTime = CurrentTime()
     engine.rootContext().setContextProperty('curtime', cTime)
+
+    weat = WeatherController()
+    engine.rootContext().setContextProperty('weather', weat)
 
     engine.load(QUrl('UIInfoDevice/UIInfoDevice.qml'))
 

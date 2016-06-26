@@ -14,7 +14,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty, pyqtSlot
 from PyQt5.QtNetwork import QNetworkAccessManager
 
 
@@ -50,9 +50,11 @@ class WeatherController(QObject):
     def temp(self):
         pass
 
-    def view_is_readdy(self):
-        pass
+    @pyqtSlot()
+    def view_is_ready(self):
+        print('The view is ready')
 
+    @pyqtSlot()
     def stop_timer(self):
         pass
 

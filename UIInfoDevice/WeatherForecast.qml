@@ -2,7 +2,7 @@ import QtQuick 2.4
 
 WeatherForecastForm {
     anchors.fill: parent
-    Component.onCompleted: weather.viewIsReaddy()
+    Component.onCompleted: weather.view_is_ready()
     Component.onDestruction: if (weather != null) weather.stopTimer()
 
     iconCurrent.source: weather.icon
