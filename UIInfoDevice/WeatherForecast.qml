@@ -12,6 +12,7 @@ WeatherForecastForm {
         delegate: ForecastDelegate {}
     }
 
+
 //    forecastListView.model: weather.dataModel
 //    forecastListView.delegate: forecastDelegate
 }

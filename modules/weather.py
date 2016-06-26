@@ -14,8 +14,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty, pyqtSlot
+from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty, pyqtSlot, \
+    QUrl
 from PyQt5.QtNetwork import QNetworkAccessManager
+from PyQt5.QtQuick import QQuickView
 
 
 class WeatherController(QObject):
@@ -32,10 +34,12 @@ class WeatherController(QObject):
 
         self._timer.timeout.connect(self.update_weather)
 
-        with open('resources/api.txt') as f:
-            self._api_key = f.readline()
-
-        print(self._api_key)
+        try:
+            with open('resources/api_.txt') as f:
+                self._api_key = f.readline()
+                print(self._api_key)
+        except FileNotFoundError:
+            print('The api key is not found')
 
     weather_changed = pyqtSignal()
 
