@@ -32,4 +32,4 @@ class CurrentTime(QObject):
         return QTime.currentTime().toString('hh:mm')
 
     def refresh_time(self):
-        self.timeChanged.emit()
+        self.time_changed.emit()
