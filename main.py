@@ -18,7 +18,7 @@ import sys
 
 import PyQt5
 from os import path, environ
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import QUrl, Qt
 from PyQt5.QtGui import QGuiApplication
 from PyQt5.QtQml import QQmlApplicationEngine
 
@@ -26,6 +26,7 @@ from modules.currenttime import CurrentTime
 
 
 if __name__ == '__main__':
+    QGuiApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     environ['QT_LOGGING_TO_CONSOLE'] = '1'
 
     app = QGuiApplication(sys.argv)
