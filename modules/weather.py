@@ -32,6 +32,11 @@ class WeatherController(QObject):
 
         self._timer.timeout.connect(self.update_weather)
 
+        with open('resources/api.txt') as f:
+            self._api_key = f.readline()
+
+        print(self._api_key)
+
     weather_changed = pyqtSignal()
 
     @pyqtProperty('QString', notify=weather_changed)
