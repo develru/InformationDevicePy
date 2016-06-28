@@ -30,6 +30,8 @@ if __name__ == '__main__':
     QGuiApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     environ['QT_LOGGING_TO_CONSOLE'] = '1'
 
+    print(path.abspath(path.join(path.dirname(PyQt5.__file__), 'plugins')))
+
     app = QGuiApplication(sys.argv)
     app.addLibraryPath(path.abspath(path.join(path.dirname(PyQt5.__file__), 'plugins')))
     # filename = path.abspath(path.join(path.dirname(__file__), 'UIInfoDevice', 'UIInfoDevice.qml'))

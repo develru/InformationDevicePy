@@ -16,7 +16,8 @@
 
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty, pyqtSlot, \
     QUrl
-from PyQt5.QtNetwork import QNetworkAccessManager
+from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, \
+    QNetworkReply
 from PyQt5.QtQuick import QQuickView
 
 
@@ -34,8 +35,10 @@ class WeatherController(QObject):
 
         self._timer.timeout.connect(self.update_weather)
 
+        self._current_weather = None
+
         try:
-            with open('resources/api_.txt') as f:
+            with open('resources/api.txt') as f:
                 self._api_key = f.readline()
                 print(self._api_key)
         except FileNotFoundError:
@@ -75,7 +78,8 @@ class WeatherController(QObject):
         pass
 
     def weather_data_received(self):
-        pass
+        json_str = self._current_weather.readAll()
+        print(json_str)
 
     def forecast_data_received(self):
         pass
@@ -90,4 +94,10 @@ class WeatherController(QObject):
         pass
 
     def _request_weather_data(self):
-        pass
+        api_call = QUrl('http://api.openweathermap.org/data/2.5/weather?q' \
+                        '=Dachau,de&units=metric&APPID={0}'.format(
+            self._api_key))
+        request_current_weather = QNetworkRequest(api_call)
+        self._current_weather = self._network_manager.get(
+            request_current_weather)
+        self._current_weather.finished.connect(self.weather_data_received)
