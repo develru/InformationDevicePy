@@ -15,7 +15,7 @@
 """
 
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty, pyqtSlot, \
-    QUrl
+    QUrl, QJsonDocument
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, \
     QNetworkReply
 from PyQt5.QtQuick import QQuickView
@@ -79,7 +79,8 @@ class WeatherController(QObject):
 
     def weather_data_received(self):
         json_str = self._current_weather.readAll()
-        print(json_str)
+        json_doc = QJsonDocument(json_str)
+        self._read_data(json_doc)
 
     def forecast_data_received(self):
         pass
@@ -88,7 +89,8 @@ class WeatherController(QObject):
         pass
 
     def _read_data(self, json_object):
-        pass
+        name = json_object['name']
+        print(type(name), name)
 
     def _read_forecast_data(self, json_object):
         pass
