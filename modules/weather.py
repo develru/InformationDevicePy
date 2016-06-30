@@ -1,11 +1,11 @@
 """
     Copyright (C) 2016  Richard Schwalk
-    
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
-    
+
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -15,10 +15,8 @@
 """
 
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty, pyqtSlot, \
-    QUrl
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, \
-    QNetworkReply
-from PyQt5.QtQuick import QQuickView
+    QUrl, QJsonDocument
+from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
 
 
 class WeatherController(QObject):
@@ -36,11 +34,11 @@ class WeatherController(QObject):
         self._timer.timeout.connect(self.update_weather)
 
         self._current_weather = None
+        self._api_key = ''
 
         try:
             with open('resources/api.txt') as f:
                 self._api_key = f.readline()
-                print(self._api_key)
         except FileNotFoundError:
             print('The api key is not found')
 
@@ -79,7 +77,8 @@ class WeatherController(QObject):
 
     def weather_data_received(self):
         json_str = self._current_weather.readAll()
-        print(json_str)
+        json_doc = QJsonDocument.fromJson(json_str)
+        self._read_data(json_doc.object())
 
     def forecast_data_received(self):
         pass
@@ -88,7 +87,8 @@ class WeatherController(QObject):
         pass
 
     def _read_data(self, json_object):
-        pass
+        name = json_object['name'].toString()
+        print(type(name), name, '\n')
 
     def _read_forecast_data(self, json_object):
         pass
@@ -96,7 +96,7 @@ class WeatherController(QObject):
     def _request_weather_data(self):
         api_call = QUrl('http://api.openweathermap.org/data/2.5/weather?q' \
                         '=Dachau,de&units=metric&APPID={0}'.format(
-            self._api_key))
+                        self._api_key))
         request_current_weather = QNetworkRequest(api_call)
         self._current_weather = self._network_manager.get(
             request_current_weather)
