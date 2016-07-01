@@ -15,7 +15,7 @@
 """
 
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty, pyqtSlot, \
-    QUrl, QJsonDocument
+    QUrl, QJsonDocument, qDebug
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
 
 
@@ -88,12 +88,21 @@ class WeatherController(QObject):
 
     def _read_data(self, json_object):
         name = json_object['name'].toString()
-        print(type(name), name, '\n')
+        qDebug(name)
 
     def _read_forecast_data(self, json_object):
         pass
 
     def _request_weather_data(self):
+        """
+        Request the weater over Http request at openweathermap.org, you need
+        an API key acording to use the services.
+        If the call is finisched will call acordnig function over Qt's
+        signaling System.
+
+        :rtype: none
+
+        """
         api_call = QUrl('http://api.openweathermap.org/data/2.5/weather?q' \
                         '=Dachau,de&units=metric&APPID={0}'.format(
                         self._api_key))
@@ -101,3 +110,21 @@ class WeatherController(QObject):
         self._current_weather = self._network_manager.get(
             request_current_weather)
         self._current_weather.finished.connect(self.weather_data_received)
+
+
+class WeatheData:
+    def __init__(self):
+        self._dataRecived = False
+        self._forecastDataRecived = False
+        self._location_name = ''
+        self._temperature = 0
+        self._description = ''
+        self._icon = ''
+
+    @property
+    def location_name(self):
+        return self._location_name
+
+    @location_name.setter
+    def location_name(self, value):
+        self._location_name = value
