@@ -87,6 +87,7 @@ ApplicationWindow {
                     Button {
                         style: myButtonStyle
                         height: 50
+                        width: 90
                         text: qsTr("Weather")
                         onClicked: stackView.push(Qt.resolvedUrl(
                                                       "WeatherForecast.qml"))
@@ -95,6 +96,7 @@ ApplicationWindow {
                     Button {
                         style: myButtonStyle
                         height: 50
+                        width: 90
                         text: qsTr("Camera")
                         onClicked: stackView.push(Qt.resolvedUrl("CameraPage.qml"))
                     }
@@ -107,7 +109,7 @@ ApplicationWindow {
             ButtonStyle {
                 background: Rectangle {
                     id: bRect
-                    implicitWidth: 80
+                    implicitWidth: 50
                     implicitHeight: 25
                     border.width: control.activeFocus ? 3 : 2
                     border.color: mainWin.buttonBorderColor
@@ -123,6 +125,7 @@ ApplicationWindow {
                         //                verticalAlignment: Text.AlignVCenter
                         anchors.centerIn: parent
                         color: mainWin.buttonTextColor
+                        font.pixelSize: control.height * 0.4
                         text: control.text
                     }
                 }
