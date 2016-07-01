@@ -28,6 +28,7 @@ class WeatherController(QObject):
     def __init__(self, parent=None):
         super(WeatherController, self).__init__(parent)
 
+        self._weather_data = WeatheData()
         self._network_manager = QNetworkAccessManager(self)
         self._timer = QTimer(self)
 
@@ -46,7 +47,7 @@ class WeatherController(QObject):
 
     @pyqtProperty('QString', notify=weather_changed)
     def location(self):
-        pass
+        return self._weather_data.location_name
 
     @pyqtProperty('QString', notify=weather_changed)
     def description(self):
@@ -89,6 +90,13 @@ class WeatherController(QObject):
     def _read_data(self, json_object):
         name = json_object['name'].toString()
         qDebug(name)
+        if name == '':
+            message = json_object['message'].toString()
+            self._weather_data.location_name = message
+        else:
+            self._weather_data.location_name = name
+
+            self.weather_changed.emit()
 
     def _read_forecast_data(self, json_object):
         pass
