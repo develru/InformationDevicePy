@@ -128,3 +128,27 @@ class WeatheData:
     @location_name.setter
     def location_name(self, value):
         self._location_name = value
+
+    @property
+    def temerature(self):
+        return self._temperature
+
+    @temerature.setter
+    def temerature(self, value):
+        self._temperature = value
+
+    @property
+    def description(self):
+        return self._description
+
+    @description.setter
+    def description(self, value):
+        self._description = value
+
+    @property
+    def icon(self):
+        return self._icon
+
+    @icon.setter
+    def icon(self, value):
+        self._icon = value
