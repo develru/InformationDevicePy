@@ -35,6 +35,7 @@ class WeatherController(QObject):
         self._timer.timeout.connect(self.update_weather)
 
         self._current_weather = None
+        self._forecast_weather = None
         self._api_key = ''
 
         try:
@@ -89,6 +90,11 @@ class WeatherController(QObject):
 
     def _read_data(self, json_object):
         # location
+        """
+        Read the current weather data from the json object.
+        :param json_object: The Json Object
+        :return nothing
+        """
         if 'name' not in json_object:
             self._weather_data.location_name = 'No data available!'
         else:
@@ -122,21 +128,31 @@ class WeatherController(QObject):
 
     def _request_weather_data(self):
         """
-        Request the weater over Http request at openweathermap.org, you need
-        an API key acording to use the services.
-        If the call is finisched will call acordnig function over Qt's
+        Request the weather over Http request at openweathermap.org, you need
+        an API key according to use the services.
+        If the call is finished will call according function over Qt's
         signaling System.
 
-        :rtype: none
+        :return: nothing
 
         """
-        api_call = QUrl('http://api.openweathermap.org/data/2.5/weather?q' \
-                        '=Dachau,de&units=metric&APPID={0}'.format(
-                        self._api_key))
+
+        # request current weather
+        api_call = QUrl(
+            'http://api.openweathermap.org/data/2.5/weather?q'
+            '=Dachau,de&units=metric&APPID={0}'.format(self._api_key))
         request_current_weather = QNetworkRequest(api_call)
         self._current_weather = self._network_manager.get(
             request_current_weather)
         self._current_weather.finished.connect(self.weather_data_received)
+
+        # forecast data
+        api_call_forecast = QUrl(
+            'http://api.openweathermap.org/data/2.5/forecast/daily?q=Dachau,'
+            'de&cnt=4&units=metric&APPID={0}'.format(self._api_key))
+        request_forecast = QNetworkRequest(api_call_forecast)
+        self._forecast_weather = self._network_manager.get(request_forecast)
+        self._forecast_weather.finished.connect(self.forecast_data_received())
 
 
 class WeatheData:
