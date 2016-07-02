@@ -51,15 +51,15 @@ class WeatherController(QObject):
 
     @pyqtProperty('QString', notify=weather_changed)
     def description(self):
-        pass
+        return self._weather_data.description
 
     @pyqtProperty('QString', notify=weather_changed)
     def icon(self):
-        pass
+        return self._weather_data.icon
 
     @pyqtProperty('QString', notify=weather_changed)
     def temp(self):
-        pass
+        return str(self._weather_data.temperature)
 
     @pyqtSlot()
     def view_is_ready(self):
@@ -88,13 +88,32 @@ class WeatherController(QObject):
         pass
 
     def _read_data(self, json_object):
-        name = json_object['name'].toString()
-        qDebug(name)
-        if name == '':
-            message = json_object['message'].toString()
-            self._weather_data.location_name = message
+        # location
+        if 'name' not in json_object:
+            self._weather_data.location_name = 'No data available!'
         else:
-            self._weather_data.location_name = name
+            name = json_object['name'].toString()
+            qDebug(name)
+            if name == '':
+                message = json_object['message'].toString()
+                self._weather_data.location_name = message
+            else:
+                self._weather_data.location_name = name
+
+                # temperature
+                tDo = json_object['main'].toObject()['temp'].toDouble()
+                temp = int(round(tDo))
+                self._weather_data.temperature = temp
+
+                # description
+                json_weather = json_object['weather'].toArray()[0].toObject()
+                desc = json_weather['description'].toString()
+                self._weather_data.description = desc
+
+                # icon
+                icon = json_weather['icon'].toString()
+                temp_icon = '../resources/weather_img/{0}.png'.format(icon)
+                self._weather_data.icon = temp_icon
 
             self.weather_changed.emit()
 
@@ -138,11 +157,11 @@ class WeatheData:
         self._location_name = value
 
     @property
-    def temerature(self):
+    def temperature(self):
         return self._temperature
 
-    @temerature.setter
-    def temerature(self, value):
+    @temperature.setter
+    def temperature(self, value):
         self._temperature = value
 
     @property
