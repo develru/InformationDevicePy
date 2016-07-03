@@ -202,4 +202,18 @@ class WeatheData:
         self._icon = value
 
 
+class WeatherForecastData(object):
 
+    """Docstring for WeatherForecastData. """
+
+    def __init__(self):
+        """TODO: to be defined1. """
+        self._temp_min
+
+    @property
+    def temp_min(self):
+        return self._temp_min
+
+    @temp_min.setter
+    def temp_min(self, value):
+        self._temp_min = value
