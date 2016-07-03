@@ -165,17 +165,8 @@ class WeatherController(QObject):
 
 class BaseWeatherData:
     def __init__(self):
-        self._location = ''
         self._description = ''
         self._icon = ''
-
-    @property
-    def location_name(self):
-        return self._location
-
-    @location_name.setter
-    def location_name(self, value):
-        self._location = value
 
     @property
     def description(self):
@@ -198,6 +189,7 @@ class CurrentWeatherData(BaseWeatherData):
     def __init__(self):
         super(CurrentWeatherData, self).__init__()
         self._temperature = 0
+        self._location = ''
 
     @property
     def temperature(self):
@@ -207,12 +199,21 @@ class CurrentWeatherData(BaseWeatherData):
     def temperature(self, value):
         self._temperature = value
 
-class WeatherForecastData(object):
+    @property
+    def location_name(self):
+        return self._location
 
+    @location_name.setter
+    def location_name(self, value):
+        self._location = value
+
+
+class WeatherForecastData(BaseWeatherData):
     """Docstring for WeatherForecastData. """
 
     def __init__(self):
         """TODO: to be defined1. """
+        super(WeatherForecastData, self).__init__()
         self._temp_min = 0
         self._temp_max = 0
         self._time = 0
