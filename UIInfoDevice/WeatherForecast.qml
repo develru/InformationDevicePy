@@ -8,7 +8,7 @@ WeatherForecastForm {
     iconCurrent.source: weather.icon
 
     forecastListView {
-        model: weather.dataModel
+        model: weather.data_model
         delegate: ForecastDelegate {}
     }
 

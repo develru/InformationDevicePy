@@ -15,8 +15,11 @@
 """
 
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty, pyqtSlot, \
-    QUrl, QJsonDocument, qDebug, QAbstractListModel
+    QUrl, QJsonDocument, qDebug, QAbstractListModel, Qt, QDateTime, QVariant
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
+from enum import Enum, unique
+
+from PyQt5.QtQml import QQmlListProperty
 
 
 class WeatherController(QObject):
@@ -33,6 +36,8 @@ class WeatherController(QObject):
 
         self._weather_data = CurrentWeatherData()
         self._weather_forecast_data = []
+        self._data_model = ForecastDataModel()
+
         self._network_manager = QNetworkAccessManager(self)
         self._timer = QTimer(self)
 
@@ -65,6 +70,14 @@ class WeatherController(QObject):
     @pyqtProperty('QString', notify=weather_changed)
     def temp(self):
         return str(self._weather_data.temperature)
+
+    model_changed = pyqtSignal()
+
+    @pyqtProperty(QQmlListProperty, notify=model_changed)
+    def data_model(self):
+        return QQmlListProperty(ForecastDataModel,
+                                self,
+                                self._weather_forecast_data)
 
     @pyqtSlot()
     def view_is_ready(self):
@@ -132,6 +145,7 @@ class WeatherController(QObject):
 
     def _read_forecast_data(self, json_object):
         json_list = json_object['list'].toArray()
+        self._weather_forecast_data.clear()
         for obj in json_list:
             json_list_object = obj.toObject()
             forecast_data = WeatherForecastData()
@@ -163,6 +177,9 @@ class WeatherController(QObject):
 
             self._weather_forecast_data.append(forecast_data)
 
+        self._data_model.set_all_data(self._weather_forecast_data)
+        self.model_changed.emit()
+
     def _request_weather_data(self):
         """
         Request the weather over Http request at openweathermap.org, you need
@@ -192,20 +209,64 @@ class WeatherController(QObject):
         self._forecast_weather.finished.connect(self.forecast_data_received)
 
 
-class ForecastDataModel(QAbstractListModel):
+@unique
+class RoleNames(Enum):
+    TempRole = Qt.UserRole
+    DescriptionRole = Qt.UserRole + 1
+    TimeRole = Qt.UserRole + 2
+    IconRole = Qt.UserRole + 3
 
+
+class ForecastDataModel(QAbstractListModel):
     """Docstring for ForecastDataModel. """
 
-    def __init__(self):
-        self._role_name = {
-                'TempRole': 'temp',
-                'DescriptionRole': 'description',
-                'TimeRole': 'time',
-                'IconRole': 'icon',
-                }
+    def __init__(self, parent=None):
+        super(ForecastDataModel, self).__init__(parent)
+        self._role_names = {
+            RoleNames.TempRole: 'temp',
+            RoleNames.DescriptionRole: 'description',
+            RoleNames.TimeRole: 'time',
+            RoleNames.IconRole: 'icon',
+        }
+        self._data = []
 
     def rowCount(self, parent=None, *args, **kwargs):
-        return
+        return len(self._data)
+
+    def data(self, QModelIndex, role=None):
+        row = QModelIndex.row()
+
+        if row < 0 or row >= len(self._data):
+            return QVariant()
+
+        if role == RoleNames.IconRole:
+            return self._data[row].icon
+        elif role == RoleNames.TempRole:
+            return ForecastDataModel.format_temp(self._data[row])
+        elif role == RoleNames.DescriptionRole:
+            return self._data[row].description
+        elif role == RoleNames.TimeRole:
+            return ForecastDataModel.format_time(self._data[row])
+
+        return QVariant()
+
+    def set_all_data(self, data):
+        self.beginResetModel()
+        self._data.clear()
+        self._data = data
+        self.endResetModel()
+
+    @staticmethod
+    def format_temp(weather):
+        return '{0} °C / {1} °C'.format(weather.temp_max, weather.temp_min)
+
+    @staticmethod
+    def format_time(weather):
+        dt = QDateTime.fromTime_t(weather.time)
+        return dt.toString('dddd')
+
+    def roleNames(self):
+        return self._role_names
 
 
 class BaseWeatherData:
