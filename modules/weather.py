@@ -83,7 +83,9 @@ class WeatherController(QObject):
         self._read_data(json_doc.object())
 
     def forecast_data_received(self):
-        pass
+        json_str = self._forecast_weather.readAll()
+        json_doc = QJsonDocument.fromJson(json_str)
+        self._read_forecast_data(json_doc.object())
 
     def update_weather(self):
         pass
@@ -92,6 +94,7 @@ class WeatherController(QObject):
         # location
         """
         Read the current weather data from the json object.
+
         :param json_object: The Json Object
         :return nothing
         """
@@ -124,7 +127,9 @@ class WeatherController(QObject):
             self.weather_changed.emit()
 
     def _read_forecast_data(self, json_object):
-        pass
+        json_list = json_object['list'].toArray()
+        for obj in json_list:
+            json_list_object = obj.toObject()
 
     def _request_weather_data(self):
         """
@@ -195,3 +200,6 @@ class WeatheData:
     @icon.setter
     def icon(self, value):
         self._icon = value
+
+
+
