@@ -28,7 +28,10 @@ class WeatherController(QObject):
     def __init__(self, parent=None):
         super(WeatherController, self).__init__(parent)
 
-        self._weather_data = WeatherData()
+        self._dataReceived = False
+        self._forecastDataReceived = False
+
+        self._weather_data = CurrentWeatherData()
         self._network_manager = QNetworkAccessManager(self)
         self._timer = QTimer(self)
 
@@ -80,7 +83,7 @@ class WeatherController(QObject):
     def weather_data_received(self):
         json_str = self._current_weather.readAll()
         json_doc = QJsonDocument.fromJson(json_str)
-        self._read_data(json_doc.object())
+        self._read_current_weather_data(json_doc.object())
 
     def forecast_data_received(self):
         json_str = self._forecast_weather.readAll()
@@ -90,7 +93,7 @@ class WeatherController(QObject):
     def update_weather(self):
         pass
 
-    def _read_data(self, json_object):
+    def _read_current_weather_data(self, json_object):
         # location
         """
         Read the current weather data from the json object.
@@ -160,30 +163,19 @@ class WeatherController(QObject):
         self._forecast_weather.finished.connect(self.forecast_data_received)
 
 
-class WeatherData:
+class BaseWeatherData:
     def __init__(self):
-        self._dataReceived = False
-        self._forecastDataReceived = False
-        self._location_name = ''
-        self._temperature = 0
+        self._location = ''
         self._description = ''
         self._icon = ''
 
     @property
     def location_name(self):
-        return self._location_name
+        return self._location
 
     @location_name.setter
     def location_name(self, value):
-        self._location_name = value
-
-    @property
-    def temperature(self):
-        return self._temperature
-
-    @temperature.setter
-    def temperature(self, value):
-        self._temperature = value
+        self._location = value
 
     @property
     def description(self):
@@ -201,6 +193,19 @@ class WeatherData:
     def icon(self, value):
         self._icon = value
 
+
+class CurrentWeatherData(BaseWeatherData):
+    def __init__(self):
+        super(CurrentWeatherData, self).__init__()
+        self._temperature = 0
+
+    @property
+    def temperature(self):
+        return self._temperature
+
+    @temperature.setter
+    def temperature(self, value):
+        self._temperature = value
 
 class WeatherForecastData(object):
 
