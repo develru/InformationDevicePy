@@ -32,6 +32,7 @@ class WeatherController(QObject):
         self._forecastDataReceived = False
 
         self._weather_data = CurrentWeatherData()
+        self._weather_forecast_data = []
         self._network_manager = QNetworkAccessManager(self)
         self._timer = QTimer(self)
 
@@ -124,8 +125,8 @@ class WeatherController(QObject):
 
                 # icon
                 icon = json_weather['icon'].toString()
-                temp_icon = '../resources/weather_img/{0}.png'.format(icon)
-                self._weather_data.icon = temp_icon
+                icon_path = '../resources/weather_img/{0}.png'.format(icon)
+                self._weather_data.icon = icon_path
 
             self.weather_changed.emit()
 
@@ -133,6 +134,28 @@ class WeatherController(QObject):
         json_list = json_object['list'].toArray()
         for obj in json_list:
             json_list_object = obj.toObject()
+            forecast_data = WeatherForecastData()
+
+            # time
+            time = json_list_object['dt'].toInt()
+            forecast_data.time = time
+
+            weather_array = json_list_object['weather'].toArray()
+            weather_object = weather_array[0].toObject()
+
+            # description
+            desc = weather_object['description'].toString()
+            forecast_data.description = desc
+
+            # icon
+            icon = weather_object['icon'].toString()
+            icon_path = '../resources/weather_img/{0}.png'.format(icon)
+            forecast_data.icon = icon_path
+
+            # temperature max / min
+            temp_object = json_list_object['temp'].toObject()
+            temp_min_double = temp_object['min'].toDouble()
+            temp_max_double = temp_object['max'].toDouble()
 
     def _request_weather_data(self):
         """
@@ -217,8 +240,6 @@ class WeatherForecastData(BaseWeatherData):
         self._temp_min = 0
         self._temp_max = 0
         self._time = 0
-        self._description = ''
-        self._icon = ''
 
     @property
     def temp_min(self):
@@ -243,11 +264,3 @@ class WeatherForecastData(BaseWeatherData):
     @time.setter
     def time(self, value):
         self._time = value
-
-    @property
-    def description(self):
-        return self._description
-
-    @description.setter
-    def description(self, value):
-        self._description = value
