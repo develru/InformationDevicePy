@@ -197,7 +197,15 @@ class ForecastDataModel(QAbstractListModel):
     """Docstring for ForecastDataModel. """
 
     def __init__(self):
-        pass
+        self._role_name = {
+                'TempRole': 'temp',
+                'DescriptionRole': 'description',
+                'TimeRole': 'time',
+                'IconRole': 'icon',
+                }
+
+    def rowCount(self, parent=None, *args, **kwargs):
+        return
 
 
 class BaseWeatherData:
