@@ -15,7 +15,7 @@
 """
 
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty, pyqtSlot, \
-    QUrl, QJsonDocument, qDebug
+    QUrl, QJsonDocument, qDebug, QAbstractListModel
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
 
 
@@ -156,6 +156,12 @@ class WeatherController(QObject):
             temp_object = json_list_object['temp'].toObject()
             temp_min_double = temp_object['min'].toDouble()
             temp_max_double = temp_object['max'].toDouble()
+            temp_min = int(round(temp_min_double))
+            forecast_data.temp_min = temp_min
+            temp_max = int(round(temp_max_double))
+            forecast_data.temp_max = temp_max
+
+            self._weather_forecast_data.append(forecast_data)
 
     def _request_weather_data(self):
         """
@@ -184,6 +190,14 @@ class WeatherController(QObject):
         request_forecast = QNetworkRequest(api_call_forecast)
         self._forecast_weather = self._network_manager.get(request_forecast)
         self._forecast_weather.finished.connect(self.forecast_data_received)
+
+
+class ForecastDataModel(QAbstractListModel):
+
+    """Docstring for ForecastDataModel. """
+
+    def __init__(self):
+        pass
 
 
 class BaseWeatherData:
