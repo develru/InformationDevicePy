@@ -152,7 +152,7 @@ class WeatherController(QObject):
             'de&cnt=4&units=metric&APPID={0}'.format(self._api_key))
         request_forecast = QNetworkRequest(api_call_forecast)
         self._forecast_weather = self._network_manager.get(request_forecast)
-        self._forecast_weather.finished.connect(self.forecast_data_received())
+        self._forecast_weather.finished.connect(self.forecast_data_received)
 
 
 class WeatheData:
