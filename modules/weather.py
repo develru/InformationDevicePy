@@ -28,7 +28,7 @@ class WeatherController(QObject):
     def __init__(self, parent=None):
         super(WeatherController, self).__init__(parent)
 
-        self._weather_data = WeatheData()
+        self._weather_data = WeatherData()
         self._network_manager = QNetworkAccessManager(self)
         self._timer = QTimer(self)
 
@@ -160,10 +160,10 @@ class WeatherController(QObject):
         self._forecast_weather.finished.connect(self.forecast_data_received)
 
 
-class WeatheData:
+class WeatherData:
     def __init__(self):
-        self._dataRecived = False
-        self._forecastDataRecived = False
+        self._dataReceived = False
+        self._forecastDataReceived = False
         self._location_name = ''
         self._temperature = 0
         self._description = ''
@@ -208,7 +208,11 @@ class WeatherForecastData(object):
 
     def __init__(self):
         """TODO: to be defined1. """
-        self._temp_min
+        self._temp_min = 0
+        self._temp_max = 0
+        self._time = 0
+        self._description = ''
+        self._icon = ''
 
     @property
     def temp_min(self):
@@ -217,3 +221,27 @@ class WeatherForecastData(object):
     @temp_min.setter
     def temp_min(self, value):
         self._temp_min = value
+
+    @property
+    def temp_max(self):
+        return self._temp_max
+
+    @temp_max.setter
+    def temp_max(self, value):
+        self._temp_max = value
+
+    @property
+    def time(self):
+        return self._time
+
+    @time.setter
+    def time(self, value):
+        self._time = value
+
+    @property
+    def description(self):
+        return self._description
+
+    @description.setter
+    def description(self, value):
+        self._description = value
