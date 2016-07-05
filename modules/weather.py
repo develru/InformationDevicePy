@@ -79,7 +79,7 @@ class WeatherController(QObject):
     #                             self,
     #                             self._weather_forecast_data)
 
-    @pyqtProperty('QAbstractListModel', notify=model_changed)
+    @pyqtProperty(QAbstractListModel, notify=model_changed)
     def data_model(self):
         return self._data_model
 

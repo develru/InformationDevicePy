@@ -20,10 +20,10 @@ import PyQt5
 from os import path, environ
 from PyQt5.QtCore import QUrl, Qt
 from PyQt5.QtGui import QGuiApplication
-from PyQt5.QtQml import QQmlApplicationEngine
+from PyQt5.QtQml import QQmlApplicationEngine, qmlRegisterType
 
 from modules.currenttime import CurrentTime
-from modules.weather import WeatherController
+from modules.weather import WeatherController, ForecastDataModel
 
 
 if __name__ == '__main__':
@@ -39,6 +39,8 @@ if __name__ == '__main__':
 
     weat = WeatherController()
     engine.rootContext().setContextProperty('weather', weat)
+
+    qmlRegisterType(ForecastDataModel, 'Weather', 1, 0, 'ForecastModel')
 
     engine.load(QUrl('UIInfoDevice/UIInfoDevice.qml'))
 
