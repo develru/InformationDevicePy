@@ -19,7 +19,7 @@ from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty, pyqtSlot, \
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
 from enum import Enum, unique
 
-from PyQt5.QtQml import QQmlListProperty
+# from PyQt5.QtQml import QQmlListProperty
 
 
 class WeatherController(QObject):
@@ -73,11 +73,15 @@ class WeatherController(QObject):
 
     model_changed = pyqtSignal()
 
-    @pyqtProperty(QQmlListProperty, notify=model_changed)
+    # @pyqtProperty(QQmlListProperty, notify=model_changed)
+    # def data_model(self):
+    #     return QQmlListProperty(ForecastDataModel,
+    #                             self,
+    #                             self._weather_forecast_data)
+
+    @pyqtProperty('QAbstractListModel', notify=model_changed)
     def data_model(self):
-        return QQmlListProperty(ForecastDataModel,
-                                self,
-                                self._weather_forecast_data)
+        return self._data_model
 
     @pyqtSlot()
     def view_is_ready(self):
@@ -217,7 +221,7 @@ class RoleNames(Enum):
     IconRole = Qt.UserRole + 3
 
 
-class ForecastDataModel(QAbstractListModel):
+class ForecastDataModel(QAbstractListModel, QObject):
     """Docstring for ForecastDataModel. """
 
     def __init__(self, parent=None):
