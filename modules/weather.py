@@ -227,10 +227,10 @@ class ForecastDataModel(QAbstractListModel, QObject):
     def __init__(self, parent=None):
         super(ForecastDataModel, self).__init__(parent)
         self._role_names = {
-            RoleNames.TempRole: 'temp',
-            RoleNames.DescriptionRole: 'description',
-            RoleNames.TimeRole: 'time',
-            RoleNames.IconRole: 'icon',
+            RoleNames.TempRole.value: b'temp',
+            RoleNames.DescriptionRole.value: b'description',
+            RoleNames.TimeRole.value: b'time',
+            RoleNames.IconRole.value: b'icon',
         }
         self._data = []
 
@@ -243,13 +243,13 @@ class ForecastDataModel(QAbstractListModel, QObject):
         if row < 0 or row >= len(self._data):
             return QVariant()
 
-        if role == RoleNames.IconRole:
+        if role == RoleNames.IconRole.value:
             return self._data[row].icon
-        elif role == RoleNames.TempRole:
+        elif role == RoleNames.TempRole.value:
             return ForecastDataModel.format_temp(self._data[row])
-        elif role == RoleNames.DescriptionRole:
+        elif role == RoleNames.DescriptionRole.value:
             return self._data[row].description
-        elif role == RoleNames.TimeRole:
+        elif role == RoleNames.TimeRole.value:
             return ForecastDataModel.format_time(self._data[row])
 
         return QVariant()
