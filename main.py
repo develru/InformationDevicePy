@@ -23,7 +23,8 @@ from PyQt5.QtGui import QGuiApplication
 from PyQt5.QtQml import QQmlApplicationEngine, qmlRegisterType
 
 from modules.currenttime import CurrentTime
-from modules.weatherdata import WeatherController, ForecastDataModel
+from modules.weather import WeatherController
+from modules.weatherdata import ForecastDataModel
 
 
 if __name__ == '__main__':
@@ -31,7 +32,8 @@ if __name__ == '__main__':
     environ['QT_LOGGING_TO_CONSOLE'] = '1'
 
     app = QGuiApplication(sys.argv)
-    app.addLibraryPath(path.abspath(path.join(path.dirname(PyQt5.__file__), 'plugins')))
+    app.addLibraryPath(path.abspath(path.join(path.dirname(PyQt5.__file__),
+                                              'plugins')))
     engine = QQmlApplicationEngine()
 
     cTime = CurrentTime()
