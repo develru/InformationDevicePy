@@ -23,7 +23,7 @@ from PyQt5.QtGui import QGuiApplication
 from PyQt5.QtQml import QQmlApplicationEngine, qmlRegisterType
 
 from modules.currenttime import CurrentTime
-from modules.weather import WeatherController, ForecastDataModel
+from modules.weatherdata import WeatherController, ForecastDataModel
 
 
 if __name__ == '__main__':
