@@ -94,7 +94,7 @@ class WeatherController(QObject):
         :rtype: none
         """
         self._request_weather_data()
-        self._timer.start(60000)
+        self._timer.start(3600000)
 
     @pyqtSlot()
     def stop_timer(self):
@@ -155,7 +155,7 @@ class WeatherController(QObject):
 
     def _read_forecast_data(self, json_object):
         json_list = json_object['list'].toArray()
-        self._weather_forecast_data.clear()
+        self._weather_forecast_data = []
         for obj in json_list:
             json_list_object = obj.toObject()
             forecast_data = WeatherForecastData()
