@@ -15,8 +15,9 @@
 """
 
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty, pyqtSlot, \
-        QUrl, QJsonDocument, qDebug, QAbstractListModel
+        QUrl, QJsonDocument, qDebug, QAbstractListModel, QDateTime
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
+
 from modules.weatherdata import CurrentWeatherData, ForecastDataModel, \
         WeatherForecastData
 
@@ -46,6 +47,8 @@ class WeatherController(QObject):
         self._forecast_weather = None
         self._api_key = ''
 
+        self._last_update_time = ''
+
         try:
             with open('resources/api.txt') as f:
                 self._api_key = f.readline()
@@ -72,15 +75,15 @@ class WeatherController(QObject):
 
     model_changed = pyqtSignal()
 
-    # @pyqtProperty(QQmlListProperty, notify=model_changed)
-    # def data_model(self):
-    #     return QQmlListProperty(ForecastDataModel,
-    #                             self,
-    #                             self._weather_forecast_data)
-
     @pyqtProperty(QAbstractListModel, notify=model_changed)
     def data_model(self):
         return self._data_model
+
+    last_update_time_changed = pyqtSignal()
+
+    @pyqtProperty('QString', notify=last_update_time_changed)
+    def last_update_time(self):
+        return self._last_update_time
 
     @pyqtSlot()
     def view_is_ready(self):
@@ -91,11 +94,11 @@ class WeatherController(QObject):
         :rtype: none
         """
         self._request_weather_data()
-        self._timer.start(3600000)
+        self._timer.start(60000)
 
     @pyqtSlot()
     def stop_timer(self):
-        pass
+        self._timer.stop()
 
     def weather_data_received(self):
         json_str = self._current_weather.readAll()
@@ -108,7 +111,7 @@ class WeatherController(QObject):
         self._read_forecast_data(json_doc.object())
 
     def update_weather(self):
-        pass
+        self._request_weather_data()
 
     def _read_current_weather_data(self, json_object):
         # location
@@ -145,6 +148,10 @@ class WeatherController(QObject):
                 self._weather_data.icon = icon_path
 
             self.weather_changed.emit()
+
+            self._last_update_time = QDateTime.currentDateTime().toString(
+                        'h:mm')
+            self.last_update_time_changed.emit()
 
     def _read_forecast_data(self, json_object):
         json_list = json_object['list'].toArray()

@@ -62,7 +62,7 @@ ApplicationWindow {
                 }
             }
             MyLabel {
-                text: "Last update: " + weather.lastUpdateTime
+                text: "Last update: " + weather.last_update_time
             }
         }
 
