@@ -99,6 +99,7 @@ class WeatherController(QObject):
     @pyqtSlot()
     def stop_timer(self):
         self._timer.stop()
+        qDebug('Timer stopped')
 
     def weather_data_received(self):
         json_str = self._current_weather.readAll()

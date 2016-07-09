@@ -70,6 +70,7 @@ ApplicationWindow {
                 height: parent.height
                 anchors.right: parent.right
                 text: qsTr("Settings")
+                onClicked: stackView.push(Qt.resolvedUrl("WeatherSettings.qml"))
             }
         }
 
