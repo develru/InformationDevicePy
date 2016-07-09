@@ -58,11 +58,18 @@ ApplicationWindow {
     statusBar: StatusBar {
             style: StatusBarStyle {
                 background: Rectangle {
+                    implicitHeight: 25
                     color: mainWin.toolBarColor
                 }
             }
             MyLabel {
                 text: "Last update: " + weather.last_update_time
+            }
+            ToolButton {
+                style: myButtonStyle
+                height: parent.height
+                anchors.right: parent.right
+                text: qsTr("Settings")
             }
         }
 
