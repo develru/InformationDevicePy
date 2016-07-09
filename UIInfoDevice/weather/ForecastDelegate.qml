@@ -4,9 +4,6 @@ import "../styling"
 
 Item {
     id: forecastDelegate
-    property alias forecastIcon: forecastIcon
-
-    forecastIcon.source: model.icon
 
     Background {
         id: background1
@@ -20,7 +17,7 @@ Item {
                 id: forecastIcon
                 Layout.preferredHeight: 50
                 Layout.preferredWidth: 50
-//                source: "qrc:/qtquickplugin/images/template_image.png"
+                source: model.icon
             }
 
             ColumnLayout {

@@ -49,6 +49,8 @@ class WeatherController(QObject):
 
         self._last_update_time = ''
 
+        self._requested_location = 'Dachau'
+
         try:
             with open('resources/api.txt') as f:
                 self._api_key = f.readline()
@@ -100,6 +102,15 @@ class WeatherController(QObject):
     def stop_timer(self):
         self._timer.stop()
         qDebug('Timer stopped')
+
+    @pyqtProperty('QString')
+    def requested_location(self):
+        return self._requested_location
+
+    @requested_location.setter
+    def requested_location(self, value):
+        self._requested_location = value
+        self._request_weather_data()
 
     def weather_data_received(self):
         json_str = self._current_weather.readAll()
@@ -205,7 +216,8 @@ class WeatherController(QObject):
         # request current weather
         api_call = QUrl(
             'http://api.openweathermap.org/data/2.5/weather?q'
-            '=Dachau,de&units=metric&APPID={0}'.format(self._api_key))
+            '={0},de&units=metric&APPID={1}'.format(self._requested_location,
+                                                    self._api_key))
         request_current_weather = QNetworkRequest(api_call)
         self._current_weather = self._network_manager.get(
             request_current_weather)
@@ -213,8 +225,9 @@ class WeatherController(QObject):
 
         # forecast data
         api_call_forecast = QUrl(
-            'http://api.openweathermap.org/data/2.5/forecast/daily?q=Dachau,'
-            'de&cnt=4&units=metric&APPID={0}'.format(self._api_key))
+            'http://api.openweathermap.org/data/2.5/forecast/daily?q={0},'
+            'de&cnt=4&units=metric&APPID={1}'.format(self._requested_location,
+                                                     self._api_key))
         request_forecast = QNetworkRequest(api_call_forecast)
         self._forecast_weather = self._network_manager.get(request_forecast)
         self._forecast_weather.finished.connect(self.forecast_data_received)
