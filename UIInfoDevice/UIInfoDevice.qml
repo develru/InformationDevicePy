@@ -1,6 +1,8 @@
 import QtQuick 2.5
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
+import "styling"
+import "weather"
 
 ApplicationWindow {
     id: mainWin
@@ -98,7 +100,7 @@ ApplicationWindow {
                         width: 90
                         text: qsTr("Weather")
                         onClicked: stackView.push(Qt.resolvedUrl(
-                                                      "WeatherForecast.qml"))
+                                                "weather/WeatherForecast.qml"))
                     }
 
                     Button {
