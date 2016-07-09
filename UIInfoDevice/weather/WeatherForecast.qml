@@ -1,22 +1,14 @@
 import QtQuick 2.4
 import QtQuick.Layouts 1.3
+import "../styling"
 
 Item {
     id: item1
-    property alias iconCurrent: iconCurrent
-    property alias forecastListView: forecastListView
     transformOrigin: Item.Center
 
     anchors.fill: parent
     Component.onCompleted: weather.view_is_ready()
     Component.onDestruction: if (weather != null) weather.stop_timer()
-
-    iconCurrent.source: weather.icon
-
-    forecastListView {
-        model: weather.data_model
-        delegate: ForecastDelegate {}
-    }
 
 
     Background {
@@ -45,6 +37,7 @@ Item {
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     sourceSize.height: 200
                     sourceSize.width: 200
+                    source: weather.icon
                 }
 
                 MyLabel {
@@ -81,6 +74,8 @@ Item {
 
                 ListView {
                     id: forecastListView
+                    model: weather.data_model
+                    delegate: ForecastDelegate {}
                     width: 400
                     height: 300
                     contentHeight: 300

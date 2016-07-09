@@ -145,7 +145,7 @@ class WeatherController(QObject):
 
                 # icon
                 icon = json_weather['icon'].toString()
-                icon_path = '../resources/weather_img/{0}.png'.format(icon)
+                icon_path = '../../resources/weather_img/{0}.png'.format(icon)
                 self._weather_data.icon = icon_path
 
             self.weather_changed.emit()
@@ -174,7 +174,7 @@ class WeatherController(QObject):
 
             # icon
             icon = weather_object['icon'].toString()
-            icon_path = '../resources/weather_img/{0}.png'.format(icon)
+            icon_path = '../../resources/weather_img/{0}.png'.format(icon)
             forecast_data.icon = icon_path
 
             # temperature max / min
