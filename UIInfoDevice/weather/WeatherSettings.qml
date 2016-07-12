@@ -20,11 +20,17 @@ Item {
             }
 
             MyLabel {
-                text: qsTr("Location")
+                font.pointSize: 18
+                text: qsTr("Location: ")
             }
             TextField {
                 id: locationTextField
                 font.pointSize: 18
+                focus: true
+                onAccepted: {
+                    weather.requested_location = locationTextField.text
+                    weatherSettings.Stack.view.pop()
+                }
             }
 
             MyButton {

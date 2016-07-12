@@ -3,7 +3,8 @@ import QtQuick.Layouts 1.3
 import "../styling"
 
 Item {
-    id: item1
+    id: forecastView
+    objectName: "forecastViewObject"
     transformOrigin: Item.Center
 
     anchors.fill: parent

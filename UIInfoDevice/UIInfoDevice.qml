@@ -70,6 +70,7 @@ ApplicationWindow {
             text: "Last update: " + weather.last_update_time
         }
         ToolButton {
+            visible: stackView.currentItem.objectName === "forecastViewObject" ? true : false
             style: myButtonStyle
             height: parent.height
             anchors.right: parent.right
@@ -102,9 +103,11 @@ ApplicationWindow {
                     height: 50
                     width: 90
                     text: qsTr("Weather")
-                    onClicked: stackView.push(
+                    onClicked: { stackView.push(
                                    Qt.resolvedUrl(
                                        "weather/WeatherForecast.qml"))
+                        console.log(stackView.currentItem.objectName)
+                    }
                 }
 
                 MyButton {

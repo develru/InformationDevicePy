@@ -61,18 +61,34 @@ class WeatherController(QObject):
 
     @pyqtProperty('QString', notify=weather_changed)
     def location(self):
+        """
+        The location in the weather data.
+        :return: string location name
+        """
         return self._weather_data.location_name
 
     @pyqtProperty('QString', notify=weather_changed)
     def description(self):
+        """
+        The current weather description.
+        :return: string description
+        """
         return self._weather_data.description
 
     @pyqtProperty('QString', notify=weather_changed)
     def icon(self):
+        """
+        Icon for the current weather condition.
+        :return: string the path to the icon
+        """
         return self._weather_data.icon
 
     @pyqtProperty('QString', notify=weather_changed)
     def temp(self):
+        """
+        The current temperature.
+        :return: string the formatted temperature
+        """
         return str(self._weather_data.temperature)
 
     model_changed = pyqtSignal()
