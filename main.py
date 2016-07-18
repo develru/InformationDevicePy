@@ -16,34 +16,44 @@
 
 import sys
 
-import PyQt5
-from os import path, environ
-from PyQt5.QtCore import QUrl, Qt
-from PyQt5.QtGui import QGuiApplication
-from PyQt5.QtQml import QQmlApplicationEngine, qmlRegisterType
-
-from modules.currenttime import CurrentTime
-from modules.weather import WeatherController
-from modules.weatherdata import ForecastDataModel
-
 
 if __name__ == '__main__':
-    QGuiApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-    environ['QT_LOGGING_TO_CONSOLE'] = '1'
+    test = 'kivy'
 
-    app = QGuiApplication(sys.argv)
-    app.addLibraryPath(path.abspath(path.join(path.dirname(PyQt5.__file__),
-                                              'plugins')))
-    engine = QQmlApplicationEngine()
+    if len(sys.argv) == 3 and sys.argv[1] == '-w' and sys.argv[2] == 'kivy':
+        print(sys.argv)
 
-    cTime = CurrentTime()
-    engine.rootContext().setContextProperty('curtime', cTime)
+    else:
 
-    weat = WeatherController()
-    engine.rootContext().setContextProperty('weather', weat)
+        import PyQt5
+        from os import path, environ
+        from PyQt5.QtCore import QUrl, Qt, QCoreApplication
+        from PyQt5.QtGui import QGuiApplication
+        from PyQt5.QtQml import QQmlApplicationEngine, qmlRegisterType
+        from modules.currenttime import CurrentTime
+        from modules.weather import WeatherController
+        from modules.weatherdata import ForecastDataModel
 
-    qmlRegisterType(ForecastDataModel, 'Weather', 1, 0, 'ForecastModel')
 
-    engine.load(QUrl('UIInfoDevice/UIInfoDevice.qml'))
+        # QCoreApplication.setLibraryPaths(['/home/rschwalk/dev/tools/pyvenv/pyqt5/lib/python3.5/site-packages/PyQt5/Qt/plugins'])
+        print(QCoreApplication.libraryPaths())
+        QGuiApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+        environ['QT_LOGGING_TO_CONSOLE'] = '1'
 
-    sys.exit(app.exec_())
+        app = QGuiApplication(sys.argv)
+        # app.addLibraryPath(path.abspath(path.join(path.dirname(PyQt5.__file__),
+        #                                          'plugins')))
+        print(app.libraryPaths())
+        engine = QQmlApplicationEngine()
+
+        cTime = CurrentTime()
+        engine.rootContext().setContextProperty('curtime', cTime)
+
+        weat = WeatherController()
+        engine.rootContext().setContextProperty('weather', weat)
+
+        qmlRegisterType(ForecastDataModel, 'Weather', 1, 0, 'ForecastModel')
+
+        engine.load(QUrl('UIInfoDevice/UIInfoDevice.qml'))
+
+        sys.exit(app.exec_())
