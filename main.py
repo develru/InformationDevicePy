@@ -20,8 +20,10 @@ import sys
 if __name__ == '__main__':
     test = 'kivy'
 
-    if len(sys.argv) == 3 and sys.argv[1] == '-w' and sys.argv[2] == 'kivy':
-        print(sys.argv)
+    if len(sys.argv) == 3 and sys.argv[1] == '-w':
+        if sys.argv[2] == 'kivy':
+            from mainKivy import main
+            main()
 
     else:
 

@@ -1,0 +1,23 @@
+<DeviceLayout>:
+    rows: 2
+    ActionBar:
+        pos_hint: {'top':1}
+        ActionView:
+            use_separator: True
+            ActionPrevious:
+                title: 'Action Bar'
+                with_previous: False
+            ActionOverflow:
+            ActionButton:
+                text: 'Quit'
+                on_press: app.stop()
+    GridLayout:
+        cols: 2
+        BoxLayout:
+            orientation: 'vertical'
+            Image:
+                source: './resources/weather_img/02d.png'
+            Label:
+                text: 'Dachau'
+        Label:
+            text: 'Second'
