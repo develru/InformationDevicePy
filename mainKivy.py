@@ -1,14 +1,23 @@
 import kivy
 
-kivy.require('1.5.0')
+from kivy.properties import StringProperty, NumericProperty
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 import requests
 from modules.weather_kv import WeatherData
 
 
+kivy.require('1.5.0')
+
+
 class DeviceLayout(GridLayout):
     """The main layout."""
+
+    city = StringProperty()
+    current_temp = StringProperty()
+    min_temp = StringProperty()
+    max_temp = StringProperty()
+    icon_id = StringProperty()
 
     def _request_weather_data(self):
         """TODO: Docstring for request_weather.
@@ -33,6 +42,11 @@ class DeviceLayout(GridLayout):
 
         weather = WeatherData(r.json())
         print(weather.city)
+        self.city = weather.city
+        self.current_temp = weather.temp
+        self.min_temp = weather.min_temp
+        self.max_temp = weather.max_temp
+        self.icon_id = weather.icon
 
     def load(self):
         self._request_weather_data()

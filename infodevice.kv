@@ -16,8 +16,12 @@
         BoxLayout:
             orientation: 'vertical'
             Image:
-                source: './resources/weather_img/02d.png'
+                source: './resources/weather_img/' + root.icon_id + '.png'
             Label:
-                text: 'Dachau'
+                text: root.current_temp + ' °C'
+            Label:
+                text: '(' + root.max_temp + ' °C / ' + root.min_temp + ' °C)'
+            Label:
+                text: root.city
         Label:
             text: 'Second'

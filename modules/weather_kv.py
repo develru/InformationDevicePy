@@ -23,7 +23,33 @@ class WeatherData(object):
             print('Invalid use of Weather Data, initialize with JSON data.')
         else:
             self._city = json_object['name']
+            self._temp = '{0:.0f}'.format(round(json_object['main']['temp'], 0))
+            self._min_temp = '{0:.0f}'.format(round(json_object['main']['temp_min'], 0))
+            self._max_temp = '{0:.0f}'.format(round(json_object['main']['temp_max'], 0))
+            main_weather = json_object['weather'][0]
+            self._icon = main_weather['icon']
+            self._description = main_weather['main'] + ' (' + main_weather['description'] + ')'
 
     @property
     def city(self):
         return self._city
+
+    @property
+    def temp(self):
+        return self._temp
+
+    @property
+    def min_temp(self):
+        return self._min_temp
+
+    @property
+    def max_temp(self):
+        return self._max_temp
+
+    @property
+    def icon(self):
+        return self._icon
+
+    @property
+    def description(self):
+        return self._description
