@@ -20,42 +20,46 @@ import sys
 if __name__ == '__main__':
     test = 'kivy'
 
-    if len(sys.argv) == 3 and sys.argv[1] == '-w':
-        if sys.argv[2] == 'kivy':
-            from mainKivy import main
-            main()
+    if test == 'kivy':
+        from mainKivy import main
+        main()
 
-    else:
+    #if len(sys.argv) == 3 and sys.argv[1] == '-w':
+    #    if sys.argv[2] == 'kivy':
+    #        from mainKivy import main
+    #        main()
 
-        import PyQt5
-        from os import path, environ
-        from PyQt5.QtCore import QUrl, Qt, QCoreApplication
-        from PyQt5.QtGui import QGuiApplication
-        from PyQt5.QtQml import QQmlApplicationEngine, qmlRegisterType
-        from modules.currenttime import CurrentTime
-        from modules.weather import WeatherController
-        from modules.weatherdata import ForecastDataModel
+    #else:
+
+    #    import PyQt5
+    #    from os import path, environ
+    #    from PyQt5.QtCore import QUrl, Qt, QCoreApplication
+    #    from PyQt5.QtGui import QGuiApplication
+    #    from PyQt5.QtQml import QQmlApplicationEngine, qmlRegisterType
+    #    from modules.currenttime import CurrentTime
+    #    from modules.weather import WeatherController
+    #    from modules.weatherdata import ForecastDataModel
 
 
-        # QCoreApplication.setLibraryPaths(['/home/rschwalk/dev/tools/pyvenv/pyqt5/lib/python3.5/site-packages/PyQt5/Qt/plugins'])
-        print(QCoreApplication.libraryPaths())
-        QGuiApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-        environ['QT_LOGGING_TO_CONSOLE'] = '1'
+    #    # QCoreApplication.setLibraryPaths(['/home/rschwalk/dev/tools/pyvenv/pyqt5/lib/python3.5/site-packages/PyQt5/Qt/plugins'])
+    #    print(QCoreApplication.libraryPaths())
+    #    QGuiApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    #    environ['QT_LOGGING_TO_CONSOLE'] = '1'
 
-        app = QGuiApplication(sys.argv)
-        # app.addLibraryPath(path.abspath(path.join(path.dirname(PyQt5.__file__),
-        #                                          'plugins')))
-        print(app.libraryPaths())
-        engine = QQmlApplicationEngine()
+    #    app = QGuiApplication(sys.argv)
+    #    # app.addLibraryPath(path.abspath(path.join(path.dirname(PyQt5.__file__),
+    #    #                                          'plugins')))
+    #    print(app.libraryPaths())
+    #    engine = QQmlApplicationEngine()
 
-        cTime = CurrentTime()
-        engine.rootContext().setContextProperty('curtime', cTime)
+    #    cTime = CurrentTime()
+    #    engine.rootContext().setContextProperty('curtime', cTime)
 
-        weat = WeatherController()
-        engine.rootContext().setContextProperty('weather', weat)
+    #    weat = WeatherController()
+    #    engine.rootContext().setContextProperty('weather', weat)
 
-        qmlRegisterType(ForecastDataModel, 'Weather', 1, 0, 'ForecastModel')
+    #    qmlRegisterType(ForecastDataModel, 'Weather', 1, 0, 'ForecastModel')
 
-        engine.load(QUrl('UIInfoDevice/UIInfoDevice.qml'))
+    #    engine.load(QUrl('UIInfoDevice/UIInfoDevice.qml'))
 
-        sys.exit(app.exec_())
+    #    sys.exit(app.exec_())
